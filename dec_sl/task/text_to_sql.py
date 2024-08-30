@@ -251,6 +251,13 @@ if __name__ == "__main__":
                 column_labels, example["schema"]["schema_items"]
             )
 
+            # If a table is predicted without columns, add all its columns
+            # This happens for example in Spider where only the star operator is used
+            for table_label, table_column_labels in zip(table_labels, column_labels):
+                if table_label == 1 and sum(table_column_labels) == 0:
+                    table_column_labels = [1 for _ in table_column_labels]
+
+
             schema_linking_labels.append((table_labels, column_labels))
     else:
         schema_linking_labels = None
